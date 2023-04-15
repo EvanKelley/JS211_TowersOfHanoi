@@ -38,13 +38,20 @@ const movePiece = () => {
 }
 
 // Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2
-const isLegal = () => {
+const isLegal = (startStack, endStack) => {
   // Your code here
   // Is there something in starting stack?
     // handle this with try again or proceed
   // If there is a peice in ending stack?
     // Is the piece smaller? 
+  let currentPiece = stacks[startStack].slice(-1)[0]
+  let endPiece = stacks[endStack].slice(-1)[0]
 
+  // if / else statement if legal return true, else false
+  // if endStack length = 0 its legal return true
+  // if end stack length > 0 compare. If current piece is < endPiece return true
+  // else return false 
+  
 }
 
 // What is a win in Towers of Hanoi? When should this function run?
