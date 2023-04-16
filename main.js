@@ -22,55 +22,66 @@ let stacks = {
   c: []
 };
 
-// Start here. What is this function doing?
+// Print the stacks
 const printStacks = () => {
   console.log("a: " + stacks.a);
   console.log("b: " + stacks.b);
   console.log("c: " + stacks.c);
 }
 
-// Next, what do you think this function should do?
-const movePiece = () => {
-  // Your code here
-  // remove from old place and move to new place
-  // pop and push
-
-}
-
-// Before you move, should you check if the move it actually allowed? Should 3 be able to be stacked on 2
+// Check if a move is legal
 const isLegal = (startStack, endStack) => {
-  // Your code here
-  // Is there something in starting stack?
-    // handle this with try again or proceed
-  // If there is a peice in ending stack?
-    // Is the piece smaller? 
-  let currentPiece = stacks[startStack].slice(-1)[0]
-  let endPiece = stacks[endStack].slice(-1)[0]
+  const startStackLength = stacks[startStack].length;
+  const endStackLength = stacks[endStack].length;
+  const topOfStartStack = stacks[startStack][startStackLength - 1];
+  const topOfEndStack = stacks[endStack][endStackLength - 1];
 
-  // if / else statement if legal return true, else false
-  // if endStack length = 0 its legal return true
-  // if end stack length > 0 compare. If current piece is < endPiece return true
-  // else return false 
-  
+  // If end stack is empty, move is legal
+  if (endStackLength === 0) {
+    return true;
+  }
+
+  // If top of the start stack is smaller than top of end stack, move is legal
+  if (topOfStartStack < topOfEndStack) {
+    return true;
+  }
+
+  // Otherwise, move is illegal
+  return false;
 }
 
-// What is a win in Towers of Hanoi? When should this function run?
+// Move a disc from the start stack to the end stack
+const movePiece = (startStack, endStack) => {
+  if (isLegal(startStack, endStack)) {
+    const disc = stacks[startStack].pop();
+    stacks[endStack].push(disc);
+    return true;
+  } else {
+    console.log('Illegal move! Try again.');
+    return false;
+  }
+}
+
+// Check if the player has won
 const checkForWin = () => {
-  // does stack c have all 4 (in correct order)?
-
+  return stacks.b.length === 4 &&
+         stacks.b[0] === 4 &&
+         stacks.b[1] === 3 &&
+         stacks.b[2] === 2 &&
+         stacks.b[3] === 1;
 }
 
-// When is this function called? What should it do with its argument?
+// Plays the game
 const towersOfHanoi = (startStack, endStack) => {
-  // check if legal us isLegal()
-    // print illegl if not
-    // else call movePiece
-
-  // check for win using checkForWin()
-    // either congrats and end
-    // or keep playing 
+  if (movePiece(startStack, endStack)) {
+    if (checkForWin()) {
+      console.log('You win!');
+      process.exit();
+    }
+  }
 }
 
+// Get user input and play game
 const getPrompt = () => {
   printStacks();
   rl.question('start stack: ', (startStack) => {
